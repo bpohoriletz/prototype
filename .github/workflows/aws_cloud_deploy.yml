@@ -1,0 +1,36 @@
+name: Deploy to Elastic Beanstalk
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy-us-east-1:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Set sha output
+        id: sha_vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Set message output
+        id: msg_vars
+        run: echo "message_short=$(git show -s --format=%s | cut -c1-80 | tr \/ '.')" >> $GITHUB_OUTPUT
+
+      - name: Generate deployment package
+        run: zip -r deploy.zip . -x '*.git*'
+
+      - name: Deploy to AWS Cloud
+        uses: einaregilsson/beanstalk-deploy@v21
+        with:
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: PrototypePreProductionApp
+          environment_name: PrototypePreProductionDemoEnv
+          existing_bucket_name: elasticbeanstalk-us-east-1-456169688700
+          version_label: "${{ github.event.pull_request.title || 'main' }}-${{ steps.sha_vars.outputs.sha_short }}-${{ steps.msg_vars.outputs.message_short }}"
+          region: us-east-1
+          deployment_package: deploy.zip

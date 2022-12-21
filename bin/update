@@ -1,0 +1,1 @@
+rm -rf config/ public/ storage/ vendor Gemfile Gemfile.lock bin/rails && rails new . -f -d postgresql --css=tailwind --skip-test

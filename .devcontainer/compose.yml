@@ -1,0 +1,47 @@
+volumes:
+  code:
+x-db: &pg-db
+  image: postgres:14
+  environment:
+    - LC_ALL=C.UTF-8
+    - POSTGRES_DB=prototype_test
+    - POSTGRES_USER=prototype_test
+    - POSTGRES_HOST_AUTH_METHOD=trust
+services:
+  prototype:
+    image: prototype_app
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    volumes:
+      - code:/prototype
+    working_dir: /prototype
+    command: sleep infinity
+    environment:
+      - BUNDLE_PATH=vendor/bundle
+      - DB_HOST=prototype_development
+    ports:
+      - 3000:3000
+  prototype_development:
+    <<: *pg-db
+    environment:
+      - POSTGRES_DB=prototype_development
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 54321:5432
+  prototype_test:
+    <<: *pg-db
+    ports:
+      - 54322:5432
+# Set up Mutagen synchronization and forwarding.
+# https://github.com/mutagen-io/mutagen-examples/blob/main/compose/prototype-go/compose.yml
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+    code:
+      alpha: '..'
+      beta: 'volume://code'
+      mode: 'two-way-resolved'

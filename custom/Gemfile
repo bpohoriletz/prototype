@@ -1,0 +1,41 @@
+# frozen_string_literal: true
+
+########################################################################
+#                                                                      #
+#                                                                      #
+#                         Custom Gems                                  #
+#                                                                      #
+#                                                                      #
+########################################################################
+
+gem "devise"
+gem "io-wait", "0.2.0"
+
+group :development, :test do
+  gem "annotate"
+  gem "brakeman"
+  gem "bundler-audit"
+  gem "factory_bot_rails"
+  gem "guard"
+  gem "guard-brakeman"
+  gem "guard-reek"
+  gem "guard-rspec"
+  gem "guard-rubocop"
+  gem "pry-byebug"
+  gem "reek"
+  gem "rubocop", require: false
+  gem "rubocop-git"
+  gem "rubocop-performance"
+  gem "rubocop-rake"
+  gem "rubocop-rspec"
+end
+
+group :development do
+  gem "foreman"
+end
+
+group :test do
+  gem "faker"
+  gem "rspec-rails"
+  gem "simplecov"
+end
