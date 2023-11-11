@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # :nodoc:
 class DeviseCreateAccounts < ActiveRecord::Migration[7.0]
   def change

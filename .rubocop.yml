@@ -1,8 +1,11 @@
 require:
-  - rubocop/cop/internal_affairs
+  - rubocop-capybara
+  - rubocop-factory_bot
   - rubocop-performance
-  - rubocop-rspec
+  - rubocop-rails
   - rubocop-rake
+  - rubocop-rspec
+  - rubocop/cop/internal_affairs
 
 AllCops:
   NewCops: enable
@@ -18,4 +21,10 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 
 Style/FrozenStringLiteralComment:
-  EnforcedStyle: always_true
+  EnforcedStyle: never
+
+Style/RedundantFetchBlock:
+  Enabled: false
+
+Layout/SpaceInsidePercentLiteralDelimiters:
+  Enabled: false

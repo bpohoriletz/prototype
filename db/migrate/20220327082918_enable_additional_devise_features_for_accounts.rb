@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # Enable additional features for Accont model
 class EnableAdditionalDeviseFeaturesForAccounts < ActiveRecord::Migration[7.0]
   def change # rubocop:disable Metrics/MethodLength

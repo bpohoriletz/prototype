@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # disable :reek:IrresponsibleModule
 class Account < ApplicationRecord # :nodoc:
   # Include default devise modules. Others available are:
