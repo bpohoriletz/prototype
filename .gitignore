@@ -47,3 +47,6 @@
 /cloud/**/*.d.ts
 !/cloud/jest.config.js
 /cloud/cdk.out/*
+
+# Ignore pid
+spec/api/*.pid
