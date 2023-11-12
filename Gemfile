@@ -69,3 +69,5 @@ group :test do
   gem "selenium-webdriver"
 end
 eval_gemfile "custom/Gemfile"
+
+gem "rackup", "~> 2.1"

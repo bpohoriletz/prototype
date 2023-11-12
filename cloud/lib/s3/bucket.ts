@@ -1,6 +1,5 @@
-import { Stack } from "aws-cdk-lib";
+import { Stack, RemovalPolicy } from "aws-cdk-lib";
 import { Bucket, BlockPublicAccess, CfnBucket, CfnBucketPolicy } from "aws-cdk-lib/aws-s3";
-import { RemovalPolicy } from "aws-cdk-lib";
 import * as con from "../naming/resources"
 
 export function createPrivateBucket(resourceNamePrefix: string[], stack: Stack) : Bucket {
@@ -24,6 +23,7 @@ export function createRegionalEbBucket(stack: Stack) : CfnBucket {
       }]
     }
   });
+  bucket.applyRemovalPolicy(RemovalPolicy.RETAIN);
 
   const policyDocument = {
     "Version": "2008-10-17",

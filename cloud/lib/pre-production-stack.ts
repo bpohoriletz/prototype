@@ -32,22 +32,22 @@ export class PreProductionStack extends Stack {
     // Step 0 (tricky): Create regional bucket for ElasticBeanstalk
     const regionalEbBucket: CfnBucket = createRegionalEbBucket(this);
     // Step 1: Create VPC
-    //const preProductionVpc: Vpc = createMinimalVpc(resourceNamePrefix, this);
-    //// Step 2: Create RDS server
-    //const preProductionDb: DatabaseInstance = createDatabase(resourceNamePrefix, this, preProductionVpc);
-    //// Step 3: Create ElasticBeanstalk application
-    //const appRole: Role = createAppRole(resourceNamePrefix, this);
-    //const preProductionApp: CfnApplication = createApplication(resourceNamePrefix, appRole, this);
-    //// Step 3: Create ElasticBeanstalk environment
-    //const instanceProfile: CfnInstanceProfile = createEc2InstanceProfile(resourceNamePrefix, regionalEbBucket.attrArn, this);
-    //const demoEnv: CfnEnvironment = createEnvironment(preProductionApp, resourceNamePrefix, preProductionVpc, instanceProfile, preProductionDb, this);
-    //// Step 4 (optional): Create S3 bucket for ElasticBeanstalk environment
-    //// const demoAppBucket = createPrivateBucket(resourceNamePrefix, this);
-    //// Step 5: Create application version
-    //const appVersion: CfnApplicationVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket, this)
-    //// Step 6(optional): Deploy application version to ElasticBeanstalk environment
-    //if (this.node.tryGetContext("deployInitialVersion") == "yes") {
-      //demoEnv.versionLabel = appVersion.ref
-    //}
+    const preProductionVpc: Vpc = createMinimalVpc(resourceNamePrefix, this);
+    // Step 2: Create RDS server
+    const preProductionDb: DatabaseInstance = createDatabase(resourceNamePrefix, this, preProductionVpc);
+    // Step 3: Create ElasticBeanstalk application
+    const appRole: Role = createAppRole(resourceNamePrefix, this);
+    const preProductionApp: CfnApplication = createApplication(resourceNamePrefix, appRole, this);
+    // Step 3: Create ElasticBeanstalk environment
+    const instanceProfile: CfnInstanceProfile = createEc2InstanceProfile(resourceNamePrefix, regionalEbBucket.attrArn, this);
+    const demoEnv: CfnEnvironment = createEnvironment(preProductionApp, resourceNamePrefix, preProductionVpc, instanceProfile, preProductionDb, this);
+    // Step 4 (optional): Create S3 bucket for ElasticBeanstalk environment
+    // const demoAppBucket = createPrivateBucket(resourceNamePrefix, this);
+    // Step 5: Create application version
+    const appVersion: CfnApplicationVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket, this)
+    // Step 6(optional): Deploy application version to ElasticBeanstalk environment
+    if (this.node.tryGetContext("deployInitialVersion") == "yes") {
+      demoEnv.versionLabel = appVersion.ref
+    }
   }
 }

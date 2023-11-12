@@ -16,6 +16,7 @@ export function createDatabase(resourceNamePrefix: string[], stack: Stack, vpc: 
     multiAz: false,
     instanceType: ec2.InstanceType.of(ec2.InstanceClass.T4G, ec2.InstanceSize.MICRO),
     storageType: rds.StorageType.STANDARD,
+    //maxAllocatedStorage: 100,
     backupRetention: Duration.days(0)
   });
 
