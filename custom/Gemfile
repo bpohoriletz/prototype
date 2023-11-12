@@ -36,6 +36,7 @@ end
 
 group :test do
   gem "faker"
+  gem "rack-app", "~> 11.0"
   gem "rspec-rails"
   gem "simplecov"
 end
