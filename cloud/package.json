@@ -12,7 +12,7 @@
     "test": "jest",
     "cdk": "cdk",
     "deploy": "cdk deploy -c deployInitialVersion=no",
-    "deploy-app": "cdk deploy -c deployInitialVersion=yes",
+    "deploy-version": "./refresh.sh && cdk deploy -c deployInitialVersion=yes",
     "deploy-staging": "cdk deploy --parameters environmentName=staging"
   },
   "devDependencies": {
