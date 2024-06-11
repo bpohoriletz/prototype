@@ -1,6 +1,5 @@
 require "test_helper"
 
-# disable :reek:IrresponsibleModule
 module ApplicationCable
   class ConnectionTest < ActionCable::Connection::TestCase
     # test "connects with cookies" do

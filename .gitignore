@@ -37,16 +37,10 @@
 /config/master.key
 
 /vendor/bundle
+/coverage/*
+/cloud/node_modules/*
 
 .DS_Store
-
-# Ignore NPM modules
-/cloud/node_modules/*
-!/cloud/node_modules/.keep
-/cloud/**/*.js
-/cloud/**/*.d.ts
-!/cloud/jest.config.js
-/cloud/cdk.out/*
 
 # Ignore pid
 spec/api/*.pid

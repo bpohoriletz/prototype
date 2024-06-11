@@ -24,8 +24,23 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
+guard :rubocop, all_on_start: false do
+  watch(%r{^app/.+\.rb$})
+  watch(%r{^config/.+\.rb$})
+  watch(%r{^lib/.+\.rb$})
+  watch("Guardfile")
+  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
+end
+
+guard :brakeman, run_on_start: true, quiet: true do
+  watch(%r{^app/.+\.rb$})
+  watch(%r{^config/.+\.rb$})
+  watch(%r{^lib/.+\.rb$})
+  watch("Gemfile")
+end
+
 # https://github.com/guard/listen/issues/453
-guard :rspec, cmd: "bin/rspec" do
+guard :rspec, cmd: "bin/rspec --fail-fast" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -58,7 +73,11 @@ guard :rspec, cmd: "bin/rspec" do
   watch(rails.spec_helper)     { rspec.spec_dir }
   watch(rails.routes)          { "#{rspec.spec_dir}/routing" }
   watch(rails.app_controller)  { "#{rspec.spec_dir}/controllers" }
-
+  watch(%r{^app/(.+)\.rb$})    { |m| "spec/integration/#{m[1]}" }
+  # Domains unit and integration
+  watch(%r{^domain/(.+)\.rb$})    { |m| "spec/#{m[1]}_spec.rb" }
+  watch(%r{^domain/(.+)\.rb$})    { |m| "spec/integration/#{m[1]}" }
+  watch(%r{^domain/(.+)\.rb$})    { |m| "spec/integration/#{m[1]}_spec.rb" }
   # Capybara features specs
   # watch(rails.view_dirs)     { |m| rspec.spec.call("features/#{m[1]}") }
   # watch(rails.layouts)       { |m| rspec.spec.call("features/#{m[1]}") }
@@ -68,26 +87,4 @@ guard :rspec, cmd: "bin/rspec" do
   # watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
   #   Dir[File.join("**/#{m[1]}.feature")][0] || 'spec/acceptance'
   # end
-end
-
-guard :rubocop, all_on_start: false do
-  watch(%r{^app/.+\.rb$})
-  watch(%r{^config/.+\.rb$})
-  watch(%r{^lib/.+\.rb$})
-  watch("Guardfile")
-  watch(%r{(?:.+/)?\.rubocop(?:_todo)?\.yml$}) { |m| File.dirname(m[0]) }
-end
-
-guard :brakeman, run_on_start: true, quiet: true do
-  watch(%r{^app/.+\.rb$})
-  watch(%r{^config/.+\.rb$})
-  watch(%r{^lib/.+\.rb$})
-  watch("Gemfile")
-end
-
-guard "reek", all_on_start: false do
-  watch(%r{^app/.+\.(erb|haml|rhtml|rb)$})
-  watch(%r{^config/.+\.rb$})
-  watch(%r{^lib/.+\.rb$})
-  watch(".reek")
 end
