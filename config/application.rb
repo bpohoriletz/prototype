@@ -7,9 +7,7 @@ require "rails/all"
 Bundler.require(*Rails.groups)
 
 module Prototype
-  # :nodoc:
-  # disable :reek:IrresponsibleModule
-  class Application < Rails::Application
+  class Application < Rails::Application # :nodoc:
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 

@@ -12,36 +12,3 @@ export function createPrivateBucket(resourceNamePrefix: string[], stack: Stack) 
 
   return bucket;
 }
-
-export function createRegionalEbBucket(stack: Stack) : CfnBucket {
-  const resourceName = `elasticbeanstalk-${stack.region}-${stack.account}`;
-  const bucket = new CfnBucket(stack, "ElasticBeanstalkRegionalBucket", {
-    bucketName: resourceName,
-    ownershipControls: {
-      rules: [{
-        objectOwnership: "BucketOwnerPreferred"
-      }]
-    }
-  });
-  bucket.applyRemovalPolicy(RemovalPolicy.RETAIN);
-
-  const policyDocument = {
-    "Version": "2008-10-17",
-    "Statement": [
-      {
-        "Sid": "PlaceboStatementToTrackAndDestroyDefaultPolicy",
-        "Effect": "Deny",
-        "Principal": { "Federated": ["www.amazon.com"] },
-        "Action": "s3:*",
-        "Resource": bucket.attrArn
-      }
-    ]
-  };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const cfnBucketPolicy = new CfnBucketPolicy(stack, "RegionalElasticBenastalkCfnBucketPolicy", {
-    bucket: resourceName,
-    policyDocument: policyDocument,
-  });
-
-  return bucket;
-}

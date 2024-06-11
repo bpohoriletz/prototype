@@ -15,6 +15,10 @@ export function createEc2Role(resourceNamePrefix: string[], regionalEbBucketArn:
       new PolicyStatement({
         actions: ["s3:PutObject", "s3:ListBucket", "s3:ListBucketVersions", "s3:GetObject", "s3:GetObjectVersion"],
         resources: [regionalEbBucketArn, `${regionalEbBucketArn}/resources/environments/*`],
+      }),
+      new PolicyStatement({
+        actions: ["logs:CreateLogStream", "logs:PutLogEvents"],
+        resources: ["*"],
       })
     ],
   })

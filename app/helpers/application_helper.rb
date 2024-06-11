@@ -1,4 +1,2 @@
-# disable :reek:IrresponsibleModule
-# :nodoc:
-module ApplicationHelper
+module ApplicationHelper # :nodoc:
 end

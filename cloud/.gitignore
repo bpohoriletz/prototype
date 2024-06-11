@@ -1,0 +1,7 @@
+# Ignore NPM modules
+node_modules/*
+!node_modules/.keep
+*.js
+*.d.ts
+!jest.config.js
+cdk.out/*

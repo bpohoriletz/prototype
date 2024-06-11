@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { App } from "aws-cdk-lib";
-import { PreProductionStack } from "../lib/pre-production-stack";
+import { PrototypeStack } from "../lib/prototype-stack";
 
 const app = new App();
-new PreProductionStack(app, "Prototype");
+new PrototypeStack(app, "PreProd");

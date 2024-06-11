@@ -21,7 +21,8 @@ export function createMinimalVpc(resourceNamePrefix: string[], stack: Stack) : V
     // create vpc
     const vpc = new Vpc(stack, con.ec2VpcName(resourceNamePrefix), {
       ipAddresses: IpAddresses.cidr("10.0.0.0/16"),
-      natGateways: 1,
+      //natGateways: 1,
+      natGateways: 0,
       subnetConfiguration: subnetConfigurations,
       maxAzs: 2,
     });

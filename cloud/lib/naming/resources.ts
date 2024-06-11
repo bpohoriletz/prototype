@@ -29,7 +29,7 @@ export function ebApplicationRoleName(resourceNamePrefix: string[]) : string {
 }
 
 export function ebEnvironmentName(resourceNamePrefix: string[]) : string {
-  const name: string[] = resourceNamePrefix.slice(0,3).concat("env");
+  const name: string[] = resourceNamePrefix.slice(0,3).concat("eb", "env");
 
   return partsToName(name);
 }

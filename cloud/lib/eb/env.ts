@@ -4,6 +4,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 import { CfnApplication, CfnEnvironment, CfnEnvironmentProps } from "aws-cdk-lib/aws-elasticbeanstalk";
 import { CfnInstanceProfile } from "aws-cdk-lib/aws-iam";
 import { DatabaseInstance } from "aws-cdk-lib/aws-rds";
+import { CfnScheduledAction } from 'aws-cdk-lib/aws-autoscaling';
 import * as con from "../naming/resources"
 
 export function createEnvironment(application: CfnApplication,
@@ -11,9 +12,9 @@ export function createEnvironment(application: CfnApplication,
   vpc: ec2.Vpc,
   instanceProfile: CfnInstanceProfile,
   rdsDatabase: DatabaseInstance,
-  stack: Stack) : CfnEnvironment {
+  stack: Stack,
+  solutionStackName = "64bit Amazon Linux 2023 v4.0.4 running Ruby 3.2") : CfnEnvironment {
     const environmentName: string = con.ebEnvironmentName(resourceNamePrefix);
-    const solutionStackName = "64bit Amazon Linux 2 v3.6.9 running Ruby 3.0";
     const securityGroups: ec2.SecurityGroup[] = createSecurityGroups(resourceNamePrefix, vpc, stack);
 
     const envOptions: CfnEnvironmentProps = {
@@ -29,8 +30,24 @@ export function createEnvironment(application: CfnApplication,
           value: readFileSync("../config/master.key").toString()
         },{
           namespace: "aws:elasticbeanstalk:application:environment",
+          optionName: "BUNDLE_PATH",
+          value: "/var/app/gems"
+        },{
+          namespace: "aws:elasticbeanstalk:application:environment",
           optionName: "RDS_CREDENTIALS",
           value: rdsDatabase.secret!.secretValue.unsafeUnwrap()
+        },{
+          namespace: "aws:elasticbeanstalk:environment",
+          optionName: "LoadBalancerType",
+          value: "application"
+        },{
+          namespace: "aws:elasticbeanstalk:environment:process:default",
+          optionName: "MatcherHTTPCode",
+          value: "302"
+        },{
+          namespace: "aws:elasticbeanstalk:environment:process:default",
+          optionName: "HealthCheckPath",
+          value: "/"
         },{
           namespace: "aws:elasticbeanstalk:healthreporting:system",
           optionName: "SystemType",
@@ -46,7 +63,7 @@ export function createEnvironment(application: CfnApplication,
         },{
           namespace: "aws:ec2:instances",
           optionName: "InstanceTypes",
-          value: "t2.micro"
+          value: "t2.micro,t2.nano"
         },{
           namespace: "aws:ec2:vpc",
           optionName: "ELBSubnets",
@@ -54,11 +71,117 @@ export function createEnvironment(application: CfnApplication,
         },{
           namespace: "aws:ec2:vpc",
           optionName: "Subnets",
-          value: vpc.privateSubnets.map(subnet => subnet.subnetId).join(",")
+          value: vpc.publicSubnets.map(subnet => subnet.subnetId).join(",")
+          //value: vpc.privateSubnets.map(subnet => subnet.subnetId).join(",")
         },{
           namespace: "aws:autoscaling:launchconfiguration",
           optionName: "IamInstanceProfile",
           value: instanceProfile.instanceProfileName!
+        },{
+          namespace: "aws:autoscaling:asg",
+          optionName: "MaxSize",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:trigger",
+          optionName: "BreachDuration",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:trigger",
+          optionName: "MeasureName",
+          value: "TargetResponseTime"
+        },{
+          namespace: "aws:autoscaling:trigger",
+          optionName: "Unit",
+          value: "Seconds"
+        },{
+          namespace: "aws:autoscaling:trigger",
+          optionName: "UpperThreshold",
+          value: "9"
+        },{
+          namespace: "aws:autoscaling:trigger",
+          optionName: "LowerThreshold",
+          value: "0.9"
+        },{
+          namespace: "aws:ec2:instances",
+          optionName: "EnableSpot",
+          value: "true"
+        },{
+          namespace: "aws:ec2:instances",
+          optionName: "SpotFleetOnDemandBase",
+          value: "0"
+        },{
+          namespace: "aws:ec2:instances",
+          optionName: "SpotFleetOnDemandAboveBasePercentage",
+          value: "0"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleUp",
+          optionName: "MinSize",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleUp",
+          optionName: "MaxSize",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleUp",
+          optionName: "DesiredCapacity",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleUp",
+          optionName: "StartTime",
+          value: "2024-01-01T00:00:00Z"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleUp",
+          optionName: "EndTime",
+          value: "2034-01-01T00:00:00Z"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleUp",
+          optionName: "Recurrence",
+          value: "10 14 * * *"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleDownToOne",
+          optionName: "MinSize",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleDownToOne",
+          optionName: "MaxSize",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleDownToOne",
+          optionName: "DesiredCapacity",
+          value: "1"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleDownToOne",
+          optionName: "StartTime",
+          value: "2024-01-01T00:00:00Z"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleDownToOne",
+          optionName: "EndTime",
+          value: "2034-01-01T00:00:00Z"
+        },{
+          namespace: "aws:autoscaling:scheduledaction",
+          resourceName: "ScaleDownToOne",
+          optionName: "Recurrence",
+          // make sure it's before any action in cron
+          value: "00 09 * * *"
+        },{
+          namespace: "aws:elasticbeanstalk:environment:process:default",
+          optionName: "HealthCheckPath",
+          value: "/accounts/sign_in"
+        },{
+          namespace: "aws:elasticbeanstalk:environment:process:default",
+          optionName: "MatcherHTTPCode",
+          value: "200"
         }
       ]
     };
@@ -69,7 +192,7 @@ export function createEnvironment(application: CfnApplication,
     // Allow inbound traffic on port 5432 from the web instances
     rdsDatabase.connections.allowDefaultPortFrom(securityGroups[1])
 
-    new CfnOutput(stack, "ApplicationUrl", {
+    new CfnOutput(stack, `${resourceNamePrefix.at(-1)}ApplicationUrl`, {
       exportName: `${environmentName.toLowerCase()}-application-url`,
       value: env.attrEndpointUrl
     });
@@ -90,6 +213,7 @@ function createSecurityGroups(resourceNamePrefix: string[], vpc: ec2.Vpc, stack:
 
   // Allow Security Group inbound traffic for load balancer
   lbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80), "Allow incoming traffic over port 80");
+  lbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443), "Allow incoming traffic over port 443");
 
   // Create Security Group for web instances
   resourceName = con.ec2SecurityGroupName(resourceNamePrefix.slice(0,3), "web")
