@@ -8,6 +8,7 @@ module Prototype
     #                                                                    #
     #                                                                    #
     ######################################################################
+    paths["config/routes.rb"] = "custom/config/routes.rb"
     config.generators do |generators|
       generators.system_tests = nil
       generators.factory_bot dir: "spec/factories"
