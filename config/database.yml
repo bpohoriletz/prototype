@@ -79,8 +79,21 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['dbname'] %>
-  username: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['username'] %>
-  password: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['password'] %>
-  host: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['host'] %>
+  primary: &primary_production
+    <<: *default
+    database: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['dbname'] %>
+    username: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['username'] %>
+    password: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['password'] %>
+    host: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['host'] %>
+  cache:
+    <<: *primary_production
+    database: prototype_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: prototype_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: prototype_production_cable
+    migrations_paths: db/cable_migrate
