@@ -208,7 +208,7 @@ GEM
       activesupport (>= 6.0.0)
       railties (>= 6.0.0)
     io-console (0.7.2)
-    io-wait (0.2.0)
+    io-wait (0.3.1)
     irb (1.14.1)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
@@ -530,7 +530,7 @@ DEPENDENCIES
   guard-rspec
   guard-rubocop
   importmap-rails
-  io-wait (= 0.2.0)
+  io-wait (= 0.3.1)
   jbuilder
   kamal (>= 2.0.0.rc2)
   pg (~> 1.1)
