@@ -299,7 +299,7 @@ GEM
     psych (5.1.2)
       stringio
     public_suffix (6.0.1)
-    puma (6.4.2)
+    puma (6.4.3)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
@@ -536,7 +536,7 @@ DEPENDENCIES
   pg (~> 1.1)
   propshaft
   pry-byebug
-  puma (= 6.4.2)
+  puma (= 6.4.3)
   rack-app (~> 11.0)
   rackup (~> 2.1)
   rails (~> 8.0.0.beta1)
