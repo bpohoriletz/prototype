@@ -20,7 +20,7 @@ class ApiServer < Rack::App
   API_SERVER_PORT = 9292
   apply_extensions :file_logger
 
-  before { file_logger.info(["#{request.request_method} #{request.path}", request.params].join("\n")) }
+  before { file_logger.info([ "#{request.request_method} #{request.path}", request.params ].join("\n")) }
 
   desc "healthcheck"
   get "/up" do
