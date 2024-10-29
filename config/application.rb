@@ -25,3 +25,5 @@ module Prototype
     # config.eager_load_paths << Rails.root.join("extras")
   end
 end
+
+require Rails.root.join("custom/config/application")

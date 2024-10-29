@@ -35,3 +35,14 @@
 
 /app/assets/builds/*
 !/app/assets/builds/.keep
+
+############################################################
+#                                                          #
+#                    CUSTOMIZATION                         #
+#                                                          #
+############################################################
+/vendor/bundle
+/coverage/*
+.DS_Store
+# Ignore pid
+spec/api/*.pid
