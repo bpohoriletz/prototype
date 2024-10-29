@@ -19,6 +19,7 @@ default: &default
   # https://guides.rubyonrails.org/configuring.html#database-pooling
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
+
 development:
   <<: *default
   database: prototype_development
@@ -27,15 +28,15 @@ development:
   # To create additional roles in PostgreSQL see `$ createuser --help`.
   # When left blank, PostgreSQL will use the default role. This is
   # the same name as the operating system user running Rails.
-  username: postgres
+  #username: prototype
 
   # The password associated with the PostgreSQL role (username).
-  password: postgres
+  #password:
 
   # Connect on a TCP socket. Omitted by default since the client uses a
   # domain socket that doesn't need configuration. Windows does not have
   # domain sockets, so uncomment these lines.
-  host: <%= ENV['DB_HOST'] || 'localhost' %>
+  #host: localhost
 
   # The TCP port the server listens on. Defaults to 5432.
   # If your server runs on a different port number, change accordingly.
@@ -78,8 +79,20 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  <<: *default
-  database: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['dbname'] %>
-  username: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['username'] %>
-  password: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['password'] %>
-  host: <%= JSON.parse(ENV["RDS_CREDENTIALS"] || '{}')['host'] %>
+  primary: &primary_production
+    <<: *default
+    database: prototype_production
+    username: prototype
+    password: <%= ENV["PROTOTYPE_DATABASE_PASSWORD"] %>
+  cache:
+    <<: *primary_production
+    database: prototype_production_cache
+    migrations_paths: db/cache_migrate
+  queue:
+    <<: *primary_production
+    database: prototype_production_queue
+    migrations_paths: db/queue_migrate
+  cable:
+    <<: *primary_production
+    database: prototype_production_cable
+    migrations_paths: db/cable_migrate
