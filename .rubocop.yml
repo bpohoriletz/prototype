@@ -12,29 +12,4 @@ inherit_gem: { rubocop-rails-omakase: rubocop.yml }
 #                    CUSTOMIZATION                         #
 #                                                          #
 ############################################################
-require:
-  - rubocop-capybara
-  - rubocop-factory_bot
-  - rubocop-performance
-  - rubocop-rails
-  - rubocop-rake
-  - rubocop-rspec
-  - rubocop/cop/internal_affairs
-AllCops:
-  NewCops: enable
-  Exclude:
-    - '.git/**/*'
-    - 'bin/*'
-    - 'cloud/**/*'
-    - 'db/schema.rb'
-    - 'tmp/**/*'
-    - 'vendor/**/*'
-  TargetRubyVersion: 3.2
-Style/StringLiterals:
-  EnforcedStyle: double_quotes
-Style/FrozenStringLiteralComment:
-  EnforcedStyle: never
-Style/RedundantFetchBlock:
-  Enabled: false
-Layout/SpaceInsidePercentLiteralDelimiters:
-  Enabled: false
+inherit_from: custom/.rubocop.yml
