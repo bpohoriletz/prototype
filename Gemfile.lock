@@ -312,9 +312,8 @@ GEM
       rack (>= 3.0.0)
     rack-test (2.1.0)
       rack (>= 1.3)
-    rackup (2.1.0)
+    rackup (2.2.1)
       rack (>= 3)
-      webrick (~> 1.8)
     rails (8.0.0.rc2)
       actioncable (= 8.0.0.rc2)
       actionmailbox (= 8.0.0.rc2)
@@ -494,7 +493,6 @@ GEM
       activemodel (>= 6.0.0)
       bindex (>= 0.4.0)
       railties (>= 6.0.0)
-    webrick (1.8.2)
     websocket (1.2.11)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
@@ -539,7 +537,7 @@ DEPENDENCIES
   pry-byebug
   puma (= 6.4.2)
   rack-app (~> 11.0)
-  rackup (~> 2.1)
+  rackup (~> 2.2)
   rails (~> 8.0.0.rc2)
   reek
   rspec-rails
