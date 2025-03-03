@@ -1,0 +1,3 @@
+[submodule "cloud/lib/aws-cdk-kit"]
+	path = cloud/lib/aws-cdk-kit
+	url = git@github.com:bpohoriletz/aws-cdk-kit.git
