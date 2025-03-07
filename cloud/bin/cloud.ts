@@ -2,5 +2,10 @@
 import { App } from "aws-cdk-lib";
 import { PrototypeStack } from "../lib/prototype-stack";
 
-const app = new App();
-new PrototypeStack(app, "PreProd");
+async function Main() {
+  const app = new App();
+  const stack = new PrototypeStack(app, "Prototype");
+  stack.synth("sandbox", "prototype")
+}
+
+Main()

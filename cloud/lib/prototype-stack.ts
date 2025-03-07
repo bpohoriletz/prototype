@@ -1,53 +1,44 @@
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
-import { Vpc } from "aws-cdk-lib/aws-ec2";
-import {
-  CfnApplication,
-  CfnApplicationVersion,
-  CfnEnvironment,
-} from "aws-cdk-lib/aws-elasticbeanstalk";
-import { CfnInstanceProfile, Role } from "aws-cdk-lib/aws-iam";
-import { Bucket, IBucket } from "aws-cdk-lib/aws-s3";
-import { DatabaseInstance } from "aws-cdk-lib/aws-rds";
+import { Bucket } from "aws-cdk-lib/aws-s3";
 
-import { createMinimalVpc } from "./vpc"
-import { createAppRole } from "./roles/app"
-import { createApplication } from "./eb/app"
-import { createInitAppVersions } from "./eb/app-version"
-import { createEc2InstanceProfile } from "./roles/ec2-profile"
-import { createEnvironment } from "./eb/env"
-import { createDatabase } from "./rds/postgres"
+import { createAppRole } from "./aws-cdk-kit/roles/app"
+import { createApplication } from "./aws-cdk-kit/eb/app"
+import { createNonprodDatabase } from "./aws-cdk-kit/rds/postgres"
+import { createEc2InstanceProfile } from "./aws-cdk-kit/roles/ec2-profile"
+import { createEnvironment } from "./aws-cdk-kit/eb/env"
+import { createInitAppVersions } from "./aws-cdk-kit/eb/app-version"
+import { createMinimalVpc } from "./aws-cdk-kit/ec2/vpc"
+import { createPrivateBucket } from "./aws-cdk-kit/s3/bucket";
 
 export class PrototypeStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
-    const projectName = "prototype";
-    const stackName: string = id.replace("Stack", "");
+  }
+
+  public async synth(stackName: string, projectName: string) {
     const environmentName = "demo";
-    // dirrerent environments can't be specified with parameters
-    // const environmentName: string = new CfnParameter(this, "environmentName", { type: "String", default: "demo" }).valueAsString.toLowerCase();
-    const resourceNamePrefix: string[] = [projectName, stackName, environmentName];
+    const resourceNamePrefix = [projectName, stackName, environmentName];
     // const resourceTags: string[] = [this.stackId, this.region, this.account];
     // Step 0 (tricky): Create regional bucket for ElasticBeanstalk
-    const regionalEbBucket: IBucket = Bucket.fromBucketName(this, "RegionalEbBucket", `elasticbeanstalk-${this.region}-${this.account}`);
+    const regionalEbBucket = Bucket.fromBucketName(this, "RegionalEbBucket", `elasticbeanstalk-${this.region}-${this.account}`);
     // Step 1: Create VPC
-    const preProductionVpc: Vpc = createMinimalVpc(resourceNamePrefix, this);
+    const preProductionVpc = createMinimalVpc(resourceNamePrefix, this);
     // Step 2: Create RDS server
-    const preProductionDb: DatabaseInstance = createDatabase(resourceNamePrefix, this, preProductionVpc);
+    const [_preProductionDb, _rdsSg ] = createNonprodDatabase(resourceNamePrefix, this, preProductionVpc);
     // Step 3: Create ElasticBeanstalk application
-    const appRole: Role = createAppRole(resourceNamePrefix, this);
-    const preProductionApp: CfnApplication = createApplication(resourceNamePrefix, appRole, this);
+    const appRole = createAppRole(resourceNamePrefix, this);
+    const preProductionApp = createApplication(resourceNamePrefix, appRole, this);
     // Step 3: Create ElasticBeanstalk environment
-    const instanceProfile: CfnInstanceProfile = createEc2InstanceProfile(resourceNamePrefix, regionalEbBucket.bucketArn, this);
-    // const demoEnv: CfnEnvironment = createEnvironment(preProductionApp, resourceNamePrefix, preProductionVpc, instanceProfile, preProductionDb, this, "64bit Amazon Linux 2 v3.6.17 running Ruby 3.0");
-    const demoEnvRails3: CfnEnvironment = createEnvironment(preProductionApp, resourceNamePrefix, preProductionVpc, instanceProfile, preProductionDb, this);
+    const instanceProfile = createEc2InstanceProfile(resourceNamePrefix, [regionalEbBucket.bucketArn], this);
+    const [demoEnv, _demoSg] = await createEnvironment(preProductionApp, resourceNamePrefix, instanceProfile, preProductionVpc, this, "64bit Amazon Linux 2023 v4.4.0 running Ruby 3.4");
     // Step 4 (optional): Create S3 bucket for ElasticBeanstalk environment
-    // const demoAppBucket = createPrivateBucket(resourceNamePrefix, this);
+    const _demoAppBucket = createPrivateBucket(resourceNamePrefix, this);
     // Step 5: Create application version
-    const appVersion: CfnApplicationVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket.bucketArn, this)
+    const appVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket.bucketArn, this)
     // Step 6(optional): Deploy application version to ElasticBeanstalk environment
     if (this.node.tryGetContext("deployInitialVersion") == "yes") {
-      demoEnvRails3.versionLabel = appVersion.ref
+      demoEnv.versionLabel = appVersion.ref
     }
   }
 }
