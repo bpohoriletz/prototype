@@ -1,5 +1,6 @@
 {
   "app": "npx ts-node --prefer-ts-exts bin/cloud.ts",
+  "profile": "my",
   "watch": {
     "include": [
       "**"

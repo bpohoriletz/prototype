@@ -2,7 +2,7 @@ import * as ec2 from "aws-cdk-lib/aws-ec2";
 
 export function vpcCidrConfig(name: string): ec2.IIpAddresses {
   const config = {
-    "PrototypeSandboxDemoVpc": ec2.IpAddresses.cidr("10.0.0.0/16"),
+    "SandboxVpc": ec2.IpAddresses.cidr("10.0.0.0/16"),
   };
 
   if (config.hasOwnProperty(name)) {
@@ -16,7 +16,7 @@ export function vpcCidrConfig(name: string): ec2.IIpAddresses {
 
 export function vpcSubnetConfig(name: string): ec2.SubnetConfiguration[] {
   const config = {
-    "PrototypeSandboxDemoVpc": [
+    "SandboxVpc": [
       {
         name: "Public",
         subnetType: ec2.SubnetType.PUBLIC,
