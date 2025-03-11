@@ -15,7 +15,6 @@ gem "whenever", require: false
 
 group :development, :test do
   gem "annotate"
-  gem "brakeman"
   gem "bundler-audit"
   gem "factory_bot_rails"
   gem "guard"
