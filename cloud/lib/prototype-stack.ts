@@ -33,7 +33,7 @@ export class PrototypeStack extends Stack {
     const instanceProfile = createEc2InstanceProfile(resourceNamePrefix, [regionalEbBucket.bucketArn], this);
     const [demoEnv, _demoSg] = await createEnvironment(preProductionApp, resourceNamePrefix, instanceProfile, preProductionVpc, this, "64bit Amazon Linux 2023 v4.4.0 running Ruby 3.4");
     // Step 4 (optional): Create S3 bucket for ElasticBeanstalk environment
-    const _demoAppBucket = createPrivateBucket(resourceNamePrefix, this);
+    const _ebBucket = createPrivateBucket(resourceNamePrefix, this);
     // Step 5: Create application version
     const appVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket.bucketArn, this)
     // Step 6(optional): Deploy application version to ElasticBeanstalk environment
