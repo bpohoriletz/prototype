@@ -10,6 +10,7 @@ import { createEc2InstanceProfile } from "./aws-cdk-kit/roles/ec2-profile";
 import { createEnvironment } from "./aws-cdk-kit/eb/env";
 import { createInitAppVersions } from "./aws-cdk-kit/eb/app-version";
 import { createPrivateBucket } from "./aws-cdk-kit/s3/bucket";
+import * as con from "./aws-cdk-kit/naming/resources";
 
 export class RailsStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -24,7 +25,7 @@ export class RailsStack extends Stack {
     const regionalEbBucket = Bucket.fromBucketName(this, "RegionalEbBucket", `elasticbeanstalk-${this.region}-${this.account}`);
     // Step 1: Fetch VPC
     const vpcID = ssm.StringParameter.fromStringParameterName(this, "vpcID", `/${stackName}/VpcID`).stringValue;
-    const preProductionVpc = ec2.Vpc.fromLookup(this, vpcID, {});
+    const preProductionVpc = ec2.Vpc.fromLookup(this, "RailsVpc", {vpcName: con.ec2VpcName([stackName])})
     // Step H: Fetch RDS data
     // Step 2: Create ElasticBeanstalk application
     const appRole = createAppRole(resourceNamePrefix, this);
