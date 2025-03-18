@@ -46,3 +46,4 @@
 .DS_Store
 # Ignore pid
 spec/api/*.pid
+tags

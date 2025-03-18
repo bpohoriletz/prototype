@@ -12,7 +12,7 @@ endef
 # AWS Account data
 AWS_ACCOUNT := $(shell aws sts get-caller-identity --profile=my --query "Account" --output text)
 
-check: check-node check-aws-cli check-account check-git
+check: check-node check-aws-cli check-account check-git ## Verify required toools are installed
 	@echo $(call color, $(GREEN), "********* All Set! ***********")
 check-node:
 	@printf "Verifying Node.js ...."
