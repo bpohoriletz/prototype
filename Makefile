@@ -12,7 +12,7 @@ endef
 # AWS Account data
 AWS_ACCOUNT := $(shell aws sts get-caller-identity --profile=my --query "Account" --output text)
 
-check: check-node check-aws-cli check-account check-git ## Verify required toools are installed
+check: check-node check-aws-cli check-account ## Verify required toools are installed
 	@echo $(call color, $(GREEN), "********* All Set! ***********")
 check-node:
 	@printf "Verifying Node.js ...."
@@ -27,7 +27,8 @@ check-account:
 	@printf "executing aws sts get-caller-identity $(BLUE)--profile=my$(RESET) ...."
 	@aws sts get-caller-identity --profile=my > /dev/null 2>&1 || { echo $(call color, $(RED), no$(comma) please fix); exit 1; }
 	@echo $(call color, $(YELLOW), got Account: $(AWS_ACCOUNT))
-check-git:
-	@printf "Verifying Git ........"
-	@git -v > /dev/null 2>&1 || { echo $(call color, $(RED), O_O$(comma) please fix); exit 1; }
-	@echo $(call color, $(YELLOW), yes $$(git -v))
+install: ## Install Node.js pacakges
+	@cd cloud && npm i
+bootstrap: ## Prepare an AWS environment to support CDK deployments
+	@cd cloud && npm run cdk bootstrap
+

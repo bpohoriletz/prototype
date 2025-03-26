@@ -24,7 +24,7 @@ export class RailsStack extends Stack {
     // Step 0 (tricky): Create regional bucket for ElasticBeanstalk
     const regionalEbBucket = Bucket.fromBucketName(this, "RegionalEbBucket", `elasticbeanstalk-${this.region}-${this.account}`);
     // Step 1: Fetch VPC
-    const vpcID = ssm.StringParameter.fromStringParameterName(this, "vpcID", `/${stackName}/VpcID`).stringValue;
+    // const vpcID = ssm.StringParameter.fromStringParameterName(this, "vpcID", `/${stackName}/VpcID`).stringValue;
     const preProductionVpc = ec2.Vpc.fromLookup(this, "RailsVpc", {vpcName: con.ec2VpcName([stackName])})
     // Step H: Fetch RDS data
     // Step 2: Create ElasticBeanstalk application
