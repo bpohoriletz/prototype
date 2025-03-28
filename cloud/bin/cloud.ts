@@ -13,7 +13,7 @@ async function Main() {
   const sandboxStack = new NonProdStack(app, "Sandbox", {env: cdkEnv});
   sandboxStack.synth("sandbox");
 
-  const railsStack = new RailsStack(app, "Rails", {env: cdkEnv});
+  const railsStack = new RailsStack(app, "App", {env: cdkEnv});
   railsStack.synth("sandbox", "prototype");
 }
 
