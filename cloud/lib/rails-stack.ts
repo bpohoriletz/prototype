@@ -1,8 +1,8 @@
-import { Stack, StackProps } from "aws-cdk-lib";
+import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-import * as ssm from "aws-cdk-lib/aws-ssm";
+//import * as ssm from "aws-cdk-lib/aws-ssm";
 
 import { createAppRole } from "./aws-cdk-kit/roles/app";
 import { createApplication } from "./aws-cdk-kit/eb/app";
@@ -12,8 +12,8 @@ import { createInitAppVersions } from "./aws-cdk-kit/eb/app-version";
 import { createPrivateBucket } from "./aws-cdk-kit/s3/bucket";
 import * as con from "./aws-cdk-kit/naming/resources";
 
-export class RailsStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class RailsStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
   }
 
@@ -33,9 +33,14 @@ export class RailsStack extends Stack {
     // Step 3: Create ElasticBeanstalk environment
     const instanceProfile = createEc2InstanceProfile(resourceNamePrefix, [regionalEbBucket.bucketArn], this);
     const [demoEnv, _demoSg] = await createEnvironment(preProductionApp, resourceNamePrefix, instanceProfile, preProductionVpc, this, "64bit Amazon Linux 2023 v4.4.0 running Ruby 3.4");
-    // Step 4 (optional): Create S3 bucket for ElasticBeanstalk environment
-    const _ebBucket = createPrivateBucket(resourceNamePrefix, this);
-    // Step 5: Create application version
+    // Step 4: Tag resources
+    cdk.Tags.of(demoEnv).add("Project", projectName)
+    cdk.Tags.of(demoEnv).add("Environment", environmentName)
+    // Step 5 (optional): Create S3 bucket for ElasticBeanstalk environment
+    const ebBucket = createPrivateBucket(resourceNamePrefix, this);
+    cdk.Tags.of(ebBucket).add("Project", projectName)
+    cdk.Tags.of(ebBucket).add("Environment", environmentName)
+    // Step 6: Create application version
     const appVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket.bucketArn, this);
     // Step 6(optional): Deploy application version to ElasticBeanstalk environment
     if (this.node.tryGetContext("deployInitialVersion") == "yes") {
