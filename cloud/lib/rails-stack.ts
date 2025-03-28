@@ -2,14 +2,14 @@ import * as cdk from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { Bucket } from "aws-cdk-lib/aws-s3";
 import * as ec2 from "aws-cdk-lib/aws-ec2";
-//import * as ssm from "aws-cdk-lib/aws-ssm";
+// import * as ssm from "aws-cdk-lib/aws-ssm";
 
 import { createAppRole } from "./aws-cdk-kit/roles/app";
 import { createApplication } from "./aws-cdk-kit/eb/app";
 import { createEc2InstanceProfile } from "./aws-cdk-kit/roles/ec2-profile";
 import { createEnvironment } from "./aws-cdk-kit/eb/env";
 import { createInitAppVersions } from "./aws-cdk-kit/eb/app-version";
-import { createPrivateBucket } from "./aws-cdk-kit/s3/bucket";
+// import { createPrivateBucket } from "./aws-cdk-kit/s3/bucket";
 import * as con from "./aws-cdk-kit/naming/resources";
 
 export class RailsStack extends cdk.Stack {
@@ -36,11 +36,11 @@ export class RailsStack extends cdk.Stack {
     // Step 4: Tag resources
     cdk.Tags.of(demoEnv).add("Project", projectName)
     cdk.Tags.of(demoEnv).add("Environment", environmentName)
-    // Step 5 (optional): Create S3 bucket for ElasticBeanstalk environment
-    const ebBucket = createPrivateBucket(resourceNamePrefix, this);
-    cdk.Tags.of(ebBucket).add("Project", projectName)
-    cdk.Tags.of(ebBucket).add("Environment", environmentName)
-    // Step 6: Create application version
+    // Step H (optional): Create S3 bucket for ElasticBeanstalk environment
+    // const ebBucket = createPrivateBucket(resourceNamePrefix, this);
+    // cdk.Tags.of(ebBucket).add("Project", projectName)
+    // cdk.Tags.of(ebBucket).add("Environment", environmentName)
+    // Step 5: Create application version
     const appVersion = createInitAppVersions(resourceNamePrefix, preProductionApp, regionalEbBucket.bucketArn, this);
     // Step 6(optional): Deploy application version to ElasticBeanstalk environment
     if (this.node.tryGetContext("deployInitialVersion") == "yes") {
