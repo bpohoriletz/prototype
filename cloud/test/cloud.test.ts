@@ -1,6 +1,6 @@
 import * as cdk from "aws-cdk-lib";
 import { Template } from "aws-cdk-lib/assertions";
-import { StgStack as Cloud } from "../lib/stg-stack";
+import { NonProdStack as Cloud } from "../lib/non-prod-stack";
 
 test("VPC created", () => {
   const app = new cdk.App();
