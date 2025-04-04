@@ -10,7 +10,7 @@ import { createEc2InstanceProfile } from "./aws-cdk-kit/roles/ec2-profile";
 import { createEnvironment } from "./aws-cdk-kit/eb/env";
 import { createInitAppVersions } from "./aws-cdk-kit/eb/app-version";
 // import { createPrivateBucket } from "./aws-cdk-kit/s3/bucket";
-import * as con from "./aws-cdk-kit/naming/resources";
+import * as con from "./aws-cdk-kit/utils/naming";
 
 export class RailsStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
