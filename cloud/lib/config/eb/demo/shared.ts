@@ -72,10 +72,14 @@ export function envConfig(_resourceNamePrefix: string[], scope: string): eb.CfnE
   };
 
   if (config.hasOwnProperty(scope)) {
-    console.log(`[DEBUG] "${scope}" - Loaded default shared options.`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] "${scope}" - Loaded default shared options.`);
+    }
     return config[scope as keyof typeof config];
   } else {
-    console.log(`[DEBUG] "${scope}" - Shared onfiguration not found.`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] "${scope}" - Shared onfiguration not found.`);
+    }
     return [];
   }
 }

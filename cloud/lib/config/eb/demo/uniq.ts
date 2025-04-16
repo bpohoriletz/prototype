@@ -5,7 +5,7 @@ export function envConfig(resourceNamePrefix: string[], _scope: string): eb.CfnE
   const name = names.shortEbEnvironmentName(resourceNamePrefix);
   const config = {
     "prototype-sandbox":
-    [
+      [
       {
         "namespace": "aws:autoscaling:scheduledaction",
         "resourceName": "ScaleUp",
@@ -71,10 +71,14 @@ export function envConfig(resourceNamePrefix: string[], _scope: string): eb.CfnE
   };
 
   if (config.hasOwnProperty(name)) {
-    console.log(`[DEBUG] "${name}" - Loaded uniq options.`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] "${name}" - Loaded uniq options.`);
+    }
     return config[name as keyof typeof config];
   } else {
-    console.log(`[DEBUG] "${name}" - Uniq options not found.`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] "${name}" - Uniq options not found.`);
+    }
     return [];
   }
 }

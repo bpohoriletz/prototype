@@ -7,10 +7,14 @@ export function envConfig(resourceNamePrefix: string[], _scope: string): eb.CfnE
 
 
   if (config.hasOwnProperty(name)) {
-    console.log(`[DEBUG] "${name}" - Loaded conventional options.`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] "${name}" - Loaded conventional options.`);
+    }
     return config[name as keyof typeof config];
   } else {
-    console.log(`[DEBUG] "${name}" - Conventional options not found.`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] "${name}" - Conventional options not found.`);
+    }
     return [];
   }
 }

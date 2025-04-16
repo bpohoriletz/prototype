@@ -1,0 +1,646 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`new RailsStack() matches snapshot 1`] = `
+{
+  "Outputs": {
+    "stacknameprojectnamedemoenvApplicationUrl": {
+      "Export": {
+        "Name": "stackname-projectname-demo-env-application-url",
+      },
+      "Value": {
+        "Fn::GetAtt": [
+          "stacknameprojectnamedemoenv",
+          "EndpointURL",
+        ],
+      },
+    },
+  },
+  "Parameters": {
+    "BootstrapVersion": {
+      "Default": "/cdk-bootstrap/hnb659fds/version",
+      "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
+      "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": {
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536": {
+      "DependsOn": [
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+      ],
+      "Properties": {
+        "Code": {
+          "S3Bucket": "cdk-hnb659fds-assets-00000000-us-east-1",
+          "S3Key": "c6358465bf49dfae556bb430bf9c81fa578c221b82c308e3707901b1dd654762.zip",
+        },
+        "Environment": {
+          "Variables": {
+            "AWS_CA_BUNDLE": "/etc/pki/ca-trust/extracted/pem/tls-ca-bundle.pem",
+          },
+        },
+        "Handler": "index.handler",
+        "Layers": [
+          {
+            "Ref": "StackNameProjectNameBctDeploymentAwsCliLayer6B319219",
+          },
+        ],
+        "Role": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+            "Arn",
+          ],
+        },
+        "Runtime": "python3.11",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::cdk-hnb659fds-assets-00000000-us-east-1",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::cdk-hnb659fds-assets-00000000-us-east-1/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+            {
+              "Action": [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+                "s3:PutObject",
+                "s3:PutObjectLegalHold",
+                "s3:PutObjectRetention",
+                "s3:PutObjectTagging",
+                "s3:PutObjectVersionTagging",
+                "s3:Abort*",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::elasticbeanstalk-us-east-1-00000000",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::elasticbeanstalk-us-east-1-00000000/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF",
+        "Roles": [
+          {
+            "Ref": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "InitialVersion": {
+      "DependsOn": [
+        "StackNameProjectNameBctDeploymentAwsCliLayer6B319219",
+        "StackNameProjectNameBctDeploymentCustomResourceA1CF8570",
+      ],
+      "Properties": {
+        "ApplicationName": "stackname-projectname-app",
+        "Description": "Initial application from AWS",
+        "SourceBundle": {
+          "S3Bucket": "elasticbeanstalk-us-east-1-00000000",
+          "S3Key": "stackname-projectname-app/versions/initial.zip",
+        },
+      },
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+    },
+    "OpeningVersion": {
+      "DependsOn": [
+        "StackNameProjectNameBctDeploymentAwsCliLayer6B319219",
+        "StackNameProjectNameBctDeploymentCustomResourceA1CF8570",
+      ],
+      "Properties": {
+        "ApplicationName": "stackname-projectname-app",
+        "Description": "First version of the application",
+        "SourceBundle": {
+          "S3Bucket": "elasticbeanstalk-us-east-1-00000000",
+          "S3Key": "stackname-projectname-app/versions/opening.zip",
+        },
+      },
+      "Type": "AWS::ElasticBeanstalk::ApplicationVersion",
+    },
+    "StackNameProjectNameAppRole6A4FF6FB": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "cloudformation.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "StackNameProjectNameBctDeploymentAwsCliLayer6B319219": {
+      "Properties": {
+        "Content": {
+          "S3Bucket": "cdk-hnb659fds-assets-00000000-us-east-1",
+          "S3Key": "1c5a2ab1d1e53b0672a644454aab3dbb258ccd0079c92ad0e23b95b2c2079f70.zip",
+        },
+        "Description": "/opt/awscli/aws",
+      },
+      "Type": "AWS::Lambda::LayerVersion",
+    },
+    "StackNameProjectNameBctDeploymentCustomResourceA1CF8570": {
+      "DeletionPolicy": "Delete",
+      "Properties": {
+        "DestinationBucketKeyPrefix": "stackname-projectname-app/versions",
+        "DestinationBucketName": "elasticbeanstalk-us-east-1-00000000",
+        "OutputObjectKeys": true,
+        "Prune": false,
+        "ServiceToken": {
+          "Fn::GetAtt": [
+            "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536",
+            "Arn",
+          ],
+        },
+        "SourceBucketNames": [
+          "cdk-hnb659fds-assets-00000000-us-east-1",
+        ],
+        "SourceObjectKeys": [
+          "ee3ab666818d5c719930c4d4963a9f4880f341dd6fce9800a1fd5aeda393d727.zip",
+        ],
+      },
+      "Type": "Custom::CDKBucketDeployment",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "StackNameProjectNameDemoEc2InstProf586C9F3A": {
+      "Properties": {
+        "InstanceProfileName": "StackNameProjectNameDemoEc2InstProf",
+        "Roles": [
+          {
+            "Ref": "StackNameProjectNameDemoEc2InstRole7FC8C7CB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::InstanceProfile",
+    },
+    "StackNameProjectNameDemoEc2InstRole7FC8C7CB": {
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": {
+                "Service": "ec2.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore",
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "StackNameProjectNameDemoLbSgF79314DB": {
+      "Properties": {
+        "GroupDescription": "Security Group for the Load Balancer",
+        "GroupName": "StackNameProjectNameDemoLbSg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow incoming traffic over port 80",
+            "FromPort": 80,
+            "IpProtocol": "tcp",
+            "ToPort": 80,
+          },
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow incoming traffic over port 443",
+            "FromPort": 443,
+            "IpProtocol": "tcp",
+            "ToPort": 443,
+          },
+        ],
+        "VpcId": "vpc-12345",
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "StackNameProjectNameDemoWebSgB07339CD": {
+      "Properties": {
+        "GroupDescription": "Security Group for the Web instances",
+        "GroupName": "StackNameProjectNameDemoWebSg",
+        "SecurityGroupEgress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "Description": "Allow all outbound traffic by default",
+            "IpProtocol": "-1",
+          },
+        ],
+        "VpcId": "vpc-12345",
+      },
+      "Type": "AWS::EC2::SecurityGroup",
+    },
+    "StackNameProjectNameDemoWebSgfromStackIDRailsStackIDStackNameProjectNameDemoLbSg419AAF9C808843543E": {
+      "Properties": {
+        "Description": "from StackIDRailsStackIDStackNameProjectNameDemoLbSg419AAF9C:80",
+        "FromPort": 80,
+        "GroupId": {
+          "Fn::GetAtt": [
+            "StackNameProjectNameDemoWebSgB07339CD",
+            "GroupId",
+          ],
+        },
+        "IpProtocol": "tcp",
+        "SourceSecurityGroupId": {
+          "Fn::GetAtt": [
+            "StackNameProjectNameDemoLbSgF79314DB",
+            "GroupId",
+          ],
+        },
+        "ToPort": 80,
+      },
+      "Type": "AWS::EC2::SecurityGroupIngress",
+    },
+    "allowEc2PutStatisticsD9C1A435": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": "elasticbeanstalk:PutInstanceStatistics",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "allowEc2PutStatisticsD9C1A435",
+        "Roles": [
+          {
+            "Ref": "StackNameProjectNameDemoEc2InstRole7FC8C7CB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "allowEc2UploadLogsA49BD994": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "allowEc2UploadLogsA49BD994",
+        "Roles": [
+          {
+            "Ref": "StackNameProjectNameDemoEc2InstRole7FC8C7CB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "allowEc2UploadLogsToEbRegionalBucket40230F17": {
+      "Properties": {
+        "PolicyDocument": {
+          "Statement": [
+            {
+              "Action": [
+                "s3:PutObject",
+                "s3:ListBucket",
+                "s3:ListBucketVersions",
+                "s3:GetObject",
+                "s3:GetObjectVersion",
+              ],
+              "Effect": "Allow",
+              "Resource": [
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::elasticbeanstalk-us-east-1-00000000",
+                    ],
+                  ],
+                },
+                {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition",
+                      },
+                      ":s3:::elasticbeanstalk-us-east-1-00000000/resources/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "allowEc2UploadLogsToEbRegionalBucket40230F17",
+        "Roles": [
+          {
+            "Ref": "StackNameProjectNameDemoEc2InstRole7FC8C7CB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "stacknameprojectnameapp": {
+      "Properties": {
+        "ApplicationName": "stackname-projectname-app",
+        "ResourceLifecycleConfig": {
+          "ServiceRole": {
+            "Fn::GetAtt": [
+              "StackNameProjectNameAppRole6A4FF6FB",
+              "Arn",
+            ],
+          },
+          "VersionLifecycleConfig": {
+            "MaxCountRule": {
+              "DeleteSourceFromS3": true,
+              "Enabled": true,
+              "MaxCount": 30,
+            },
+          },
+        },
+      },
+      "Type": "AWS::ElasticBeanstalk::Application",
+    },
+    "stacknameprojectnamedemoenv": {
+      "DependsOn": [
+        "stacknameprojectnameapp",
+        "StackNameProjectNameDemoEc2InstProf586C9F3A",
+      ],
+      "Properties": {
+        "ApplicationName": "stackname-projectname-app",
+        "EnvironmentName": "stackname-projectname-demo-env",
+        "OptionSettings": [
+          {
+            "Namespace": "aws:elasticbeanstalk:application:environment",
+            "OptionName": "BUNDLE_PATH",
+            "Value": "/var/app/gems",
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:command",
+            "OptionName": "Timeout",
+            "Value": "3600",
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment",
+            "OptionName": "LoadBalancerType",
+            "Value": "application",
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:healthreporting:system",
+            "OptionName": "SystemType",
+            "Value": "basic",
+          },
+          {
+            "Namespace": "aws:ec2:instances",
+            "OptionName": "InstanceTypes",
+            "Value": "t2.micro,t2.small",
+          },
+          {
+            "Namespace": "aws:autoscaling:asg",
+            "OptionName": "MaxSize",
+            "Value": "4",
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "BreachDuration",
+            "Value": "1",
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "MeasureName",
+            "Value": "TargetResponseTime",
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "Unit",
+            "Value": "Seconds",
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "UpperThreshold",
+            "Value": "9",
+          },
+          {
+            "Namespace": "aws:autoscaling:trigger",
+            "OptionName": "LowerThreshold",
+            "Value": "0.9",
+          },
+          {
+            "Namespace": "aws:ec2:instances",
+            "OptionName": "EnableSpot",
+            "Value": "true",
+          },
+          {
+            "Namespace": "aws:ec2:instances",
+            "OptionName": "SpotFleetOnDemandBase",
+            "Value": "1",
+          },
+          {
+            "Namespace": "aws:ec2:instances",
+            "OptionName": "SpotFleetOnDemandAboveBasePercentage",
+            "Value": "0",
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment:process:default",
+            "OptionName": "HealthCheckPath",
+            "Value": "/accounts/sign_in",
+          },
+          {
+            "Namespace": "aws:elasticbeanstalk:environment:process:default",
+            "OptionName": "MatcherHTTPCode",
+            "Value": "200",
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "SecurityGroups",
+            "Value": {
+              "Fn::GetAtt": [
+                "StackNameProjectNameDemoWebSgB07339CD",
+                "GroupId",
+              ],
+            },
+          },
+          {
+            "Namespace": "aws:elbv2:loadbalancer",
+            "OptionName": "SecurityGroups",
+            "Value": {
+              "Fn::GetAtt": [
+                "StackNameProjectNameDemoLbSgF79314DB",
+                "GroupId",
+              ],
+            },
+          },
+          {
+            "Namespace": "aws:ec2:vpc",
+            "OptionName": "ELBSubnets",
+            "Value": "s-12345,s-67890",
+          },
+          {
+            "Namespace": "aws:ec2:vpc",
+            "OptionName": "Subnets",
+            "Value": "p-12345,p-67890",
+          },
+          {
+            "Namespace": "aws:autoscaling:launchconfiguration",
+            "OptionName": "IamInstanceProfile",
+            "Value": {
+              "Ref": "StackNameProjectNameDemoEc2InstProf586C9F3A",
+            },
+          },
+        ],
+        "SolutionStackName": "64bit Amazon Linux 2023 v4.4.0 running Ruby 3.4",
+        "Tags": [
+          {
+            "Key": "Environment",
+            "Value": "demo",
+          },
+          {
+            "Key": "Project",
+            "Value": "projectName",
+          },
+        ],
+      },
+      "Type": "AWS::ElasticBeanstalk::Environment",
+    },
+  },
+  "Rules": {
+    "CheckBootstrapVersion": {
+      "Assertions": [
+        {
+          "Assert": {
+            "Fn::Not": [
+              {
+                "Fn::Contains": [
+                  [
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                  ],
+                  {
+                    "Ref": "BootstrapVersion",
+                  },
+                ],
+              },
+            ],
+          },
+          "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.",
+        },
+      ],
+    },
+  },
+}
+`;

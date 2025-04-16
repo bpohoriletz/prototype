@@ -6,10 +6,14 @@ export function vpcCidrConfig(name: string): ec2.IIpAddresses {
   };
 
   if (config.hasOwnProperty(name)) {
-    console.log(`[DEBUG] Loading VPC CIDR config: ${name}`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] Loading VPC CIDR config: ${name}`);
+    }
     return config[name as keyof typeof config];
   } else {
-    console.log(`[DEBUG] Using default CIDR for: ${name}`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] Using default CIDR for: ${name}`);
+    }
     return ec2.IpAddresses.cidr("10.255.0.0/16");
   }
 }
@@ -36,10 +40,14 @@ export function vpcSubnetConfig(name: string): ec2.SubnetConfiguration[] {
   };
 
   if (config.hasOwnProperty(name)) {
-    console.log(`[DEBUG] Loading VPC subnet config: ${name}`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] Loading VPC subnet config: ${name}`);
+    }
     return config[name as keyof typeof config];
   } else {
-    console.log(`[DEBUG] Using default subnets for: ${name}`);
+    if (process.env.DEBUG) {
+      console.log(`[DEBUG] Using default subnets for: ${name}`);
+    }
     return [
       {
         cidrMask: 18,
