@@ -1,0 +1,14 @@
+[Unit]
+Description=Ruby On Rails Web Application
+After=network.target
+
+[Service]
+WorkingDirectory=/var/app/current
+ExecStart=/var/app/current/bin/bundle exec puma -C config/puma.rb
+Restart=on-failure
+User=ec2-user
+Group=ec2-user
+EnvironmentFile=/var/app/current/.env.production
+
+[Install]
+WantedBy=multi-user.target

@@ -2,6 +2,7 @@
 import { App } from "aws-cdk-lib";
 import { NonProdStack } from "../lib/non-prod-stack";
 import { RailsStack } from "../lib/rails-stack";
+import { PrototypeStack } from "../lib/codedeploy-stack";
 
 async function Main() {
   const app = new App();
@@ -15,6 +16,12 @@ async function Main() {
 
   const railsStack = new RailsStack(app, "App", {env: cdkEnv});
   railsStack.synth("sandbox", "prototype");
+
+  const railsPrototypeStack = new PrototypeStack(app, "Prototype", {env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: 'us-east-2'
+  }});
+  railsPrototypeStack.synth("rails", "prototype");
 }
 
 Main();

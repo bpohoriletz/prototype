@@ -31,7 +31,7 @@ export class RailsStack extends cdk.Stack {
     const appRole = createAppRole(resourceNamePrefix, this);
     const preProductionApp = createApplication(resourceNamePrefix, appRole, this);
     // Step 3: Create ElasticBeanstalk environment
-    const instanceProfile = createEc2InstanceProfile(resourceNamePrefix, [regionalEbBucket.bucketArn], this);
+    const instanceProfile = createEc2InstanceProfile(resourceNamePrefix, regionalEbBucket.bucketArn, this);
     const [demoEnv, _demoSg] = await createEnvironment(preProductionApp, resourceNamePrefix, instanceProfile, preProductionVpc, this, "64bit Amazon Linux 2023 v4.4.0 running Ruby 3.4");
     // Step 4: Tag resources
     cdk.Tags.of(demoEnv).add("Project", projectName)

@@ -1,0 +1,37 @@
+#!/usr/bin/env ruby
+
+require 'aws-sdk-codedeploy'
+
+bucket, folder, subfolder, file = ARGV[0].split("/")
+key = "#{folder}/#{subfolder}/#{file}"
+codedeploy = Aws::CodeDeploy::Client.new(region: 'us-east-2', credentials: Aws::SharedCredentials.new(profile_name: 'my'))
+application_name = "rails-prototype-cd-app"
+deployment_group_name = "rails-prototype-dg"
+puts "Deploying #{key} to #{deployment_group_name} of #{application_name} from #{bucket}"
+
+codedeploy.register_application_revision(
+  application_name: application_name,
+  revision: {
+    revision_type: "S3",
+    s3_location: {
+      bucket: bucket,
+      key: key,
+      bundle_type: 'zip'
+    }
+  }
+)
+puts "Application revision registered with CodeDeploy."
+
+deployment = codedeploy.create_deployment(
+  application_name: application_name,
+  deployment_group_name: deployment_group_name,
+  revision: {
+    revision_type: "S3",
+    s3_location: {
+      bucket: bucket,
+      key: key,
+      bundle_type: 'zip'
+    }
+  }
+)
+puts "Deployment started with ID: #{deployment.deployment_id}"

@@ -15,6 +15,8 @@ gem "whenever", require: false
 
 group :development, :test do
   gem "annotate"
+  gem "aws-sdk-s3"
+  gem "aws-sdk-codedeploy"
   gem "bundler-audit"
   gem "factory_bot_rails"
   gem "guard"
@@ -32,6 +34,7 @@ group :development, :test do
   gem "rubocop-performance"
   gem "rubocop-rake"
   gem "rubocop-rspec"
+  gem "zip"
 end
 
 group :development do

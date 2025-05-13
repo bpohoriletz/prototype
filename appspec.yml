@@ -1,0 +1,51 @@
+version: 0.0
+os: linux
+files:
+  - source: .platform/nginx/server.crt
+    destination: /etc/pki/nginx
+    mode: 000400
+    owner: ec2-user
+    group: www-data
+  - source: .platform/nginx/server.key
+    destination: /etc/pki/nginx/private
+    mode: 000400
+    owner: ec2-user
+    group: www-data
+  - source: .platform/web.service
+    destination: /etc/systemd/system/
+  - source: .platform/nginx/redirect.conf
+    destination: /etc/nginx/default.d/
+  - source: .platform/nginx/server.conf
+    destination: /etc/nginx/conf.d/
+  - source: .platform/nginx/custom.conf
+    destination: /etc/nginx/conf.d/
+  - source: .platform/.env.production
+    destination: /var/app/current
+  - source: /
+    destination: /var/app/current
+permissions:
+  - object: /
+    pattern: "**"
+    owner: ec2-user
+    group: ec2-user
+hooks:
+  ApplicationStop:
+    - location: .scripts/00_application_stop.sh
+      timeout: 300
+      runas: ec2-user
+  BeforeInstall:
+    - location: .scripts/01_before_install.sh
+      timeout: 300
+      runas: ec2-user
+  AfterInstall:
+    - location: .scripts/02_after_install.sh
+      timeout: 900
+      runas: ec2-user
+  ApplicationStart:
+    - location: .scripts/03_application_start.sh
+      timeout: 300
+      runas: ec2-user
+  ValidateService:
+    - location: .scripts/04_validate_service.sh
+      timeout: 300
+      runas: ec2-user

@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+require 'aws-sdk-s3'
+require 'zip'
+
+puts "Uploading revision to S3 ..."
+s3 = Aws::S3::Client.new(region: 'us-east-2', credentials: Aws::SharedCredentials.new(profile_name: 'my'))
+revision = `git rev-parse --short HEAD`.strip
+bucket_name = 'codedeploy-rails-prototype-us-east-2-456169688700-bct'
+artifact_key = "resources/versions/#{revision}.zip"
+
+# Create a zip file of the application
+zipfile_name = "/tmp/#{revision}.zip"
+exclude_dirs = %w[.git log tmp cloud]
+`rm -rf #{zipfile_name}`
+
+Zip::File.open(zipfile_name, Zip::File::CREATE) do |zipfile|
+  Dir.glob('**/*', File::FNM_DOTMATCH).each do |file|
+    next if exclude_dirs.any? { |dir| file.start_with?("#{dir}/") }
+    puts "Compressing: #{file}"
+
+    zipfile.add(file, file)
+  end
+end
+
+# Upload the zip file to S3
+response = s3.put_object(bucket: bucket_name, key: artifact_key, body: File.open(zipfile_name, 'rb'))
+puts "\n\nFile uploaded successfully."
+puts "Path: #{bucket_name}/#{artifact_key}"
