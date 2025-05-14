@@ -20,6 +20,7 @@ cd /var/app/current
 bin/bundle
 # Compile assets
 RAILS_ENV=production bin/bundle exec rails assets:precompile
+RAILS_ENV=production bin/bundle exec rails db:create
 
 # Reload NGINX to apply possible conf changes
 sudo nginx -s reload
