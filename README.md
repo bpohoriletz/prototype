@@ -1,4 +1,3 @@
-![AWS Cloud](PrototypeAWS.png)
 # Setup
 In order to deploy project you will need the following tools:
 * Node.js
