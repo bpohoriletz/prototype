@@ -7,7 +7,7 @@ import { createCodedeployRole } from './aws-cdk-kit/codedeploy/role';
 import { createPublicDeploymentGroup } from './aws-cdk-kit/codedeploy/deployment-group';
 import { createEc2InstanceProfile } from './aws-cdk-kit/roles/ec2-profile';
 // import { createGithubCliRole } from './aws-cdk-kit/iam/role';
-import { createPrivateBucket } from './aws-cdk-kit/s3/bucket';
+import { createTempPrivateBucket } from './aws-cdk-kit/s3/bucket';
 import PetVpcBuilder from './aws-cdk-kit/ec2/vpc-builders/pet';
 import VpcDirector from './aws-cdk-kit/directors/vpc';
 
@@ -21,7 +21,7 @@ export class PrototypeStack extends cdk.Stack {
     // Step 1: Get VPC
     const parserVpc = new VpcDirector(PetVpcBuilder).constructVpc(this, 'Vpc');
     // Step 2: Create S3 bucket
-    const cdBucket = createPrivateBucket([`codedeploy-${stackName}-${projectName}`, this.region, this.account], this);
+    const cdBucket = createTempPrivateBucket([`codedeploy-${stackName}-${projectName}`, this.region, this.account], this);
     // Step 3: Create Roles
     // createGithubCliRole('bpohoriletz', this);
     const cdRole = createCodedeployRole(resourceNamePrefix, cdBucket.bucketArn, this);
