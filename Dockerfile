@@ -35,6 +35,7 @@ RUN apt-get update -qq && \
 
 # Install application gems
 COPY Gemfile Gemfile.lock ./
+COPY custom/ custom/
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
     bundle exec bootsnap precompile --gemfile
@@ -66,7 +67,6 @@ USER 1000:1000
 
 # Entrypoint prepares the database.
 ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
 # Start server via Thruster by default, this can be overwritten at runtime
 EXPOSE 80
 CMD ["./bin/thrust", "./bin/rails", "server"]
