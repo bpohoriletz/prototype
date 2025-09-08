@@ -163,7 +163,14 @@ GEM
       railties (>= 5.0.0)
     faker (3.5.1)
       i18n (>= 1.8.11, < 2)
+    ffi (1.17.1-aarch64-linux-gnu)
+    ffi (1.17.1-aarch64-linux-musl)
+    ffi (1.17.1-arm-linux-gnu)
+    ffi (1.17.1-arm-linux-musl)
     ffi (1.17.1-arm64-darwin)
+    ffi (1.17.1-x86_64-darwin)
+    ffi (1.17.1-x86_64-linux-gnu)
+    ffi (1.17.1-x86_64-linux-musl)
     foreman (0.88.1)
     formatador (1.1.0)
     fugit (1.11.1)
@@ -307,7 +314,7 @@ GEM
       date
       stringio
     public_suffix (6.0.1)
-    puma (6.4.2)
+    puma (7.0.1)
       nio4r (~> 2.0)
     raabro (1.4.0)
     racc (1.8.1)
@@ -563,7 +570,7 @@ DEPENDENCIES
   kamal
   propshaft
   pry-byebug
-  puma (= 6.4.2)
+  puma (= 7.0.1)
   rack-app (~> 11.0)
   rackup (~> 2.1)
   rails (~> 8.0.1)
