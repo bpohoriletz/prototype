@@ -8,7 +8,7 @@
 
 gem "devise"
 gem "io-wait", "0.2.0"
-gem "puma", "6.4.2"
+gem "puma", "7.0.3"
 gem "rackup", "~> 2.1"
 gem "rubocop-rails", "~> 2.22"
 gem "whenever", require: false
