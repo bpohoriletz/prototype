@@ -10,7 +10,7 @@ jobs:
     steps:
 
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v6
 
       - name: Set sha output
         id: sha_vars
