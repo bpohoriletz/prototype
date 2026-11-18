@@ -10,7 +10,7 @@ jobs:
     steps:
 
       - name: Checkout source code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v7
 
       - name: Set sha output
         id: sha_vars
@@ -24,7 +24,7 @@ jobs:
         run: zip -r deploy.zip . -x '*.git*'
 
       - name: Deploy to AWS Cloud
-        uses: einaregilsson/beanstalk-deploy@v21
+        uses: einaregilsson/beanstalk-deploy@v23
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

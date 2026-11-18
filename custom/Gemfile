@@ -7,10 +7,10 @@
 ########################################################################
 
 gem "devise"
-gem "io-wait", "0.2.0"
+gem "io-wait", "1.0.0"
 # gem "puma", "6.4.2"
 gem "rackup", "~> 2.1"
-gem "rubocop-rails", "~> 2.22"
+gem "rubocop-rails", "~> 2.38"
 gem "whenever", require: false
 
 group :development, :test do
