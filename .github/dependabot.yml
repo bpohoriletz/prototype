@@ -1,12 +1,25 @@
 version: 2
+
+multi-ecosystem-groups:
+  all-dependencies:
+    schedule:
+      interval: weekly
+
 updates:
-- package-ecosystem: bundler
-  directory: "/"
-  schedule:
-    interval: weekly
-  open-pull-requests-limit: 10
-- package-ecosystem: github-actions
-  directory: "/"
-  schedule:
-    interval: weekly
-  open-pull-requests-limit: 10
+  - package-ecosystem: bundler
+    directory: "/"
+    patterns:
+      - "*"
+    multi-ecosystem-group: all-dependencies
+
+  - package-ecosystem: github-actions
+    directory: "/"
+    patterns:
+      - "*"
+    multi-ecosystem-group: all-dependencies
+
+  - package-ecosystem: npm
+    directory: "/cloud"
+    patterns:
+      - "*"
+    multi-ecosystem-group: all-dependencies
